@@ -7,10 +7,6 @@ package contact.ui;
 
 import contacts.HibernateUtil;
 import contacts.entity.Contact;
-import java.awt.List;
-import java.util.ArrayList;
-import java.util.ListIterator;
-import static java.util.Spliterators.iterator;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
@@ -31,7 +27,7 @@ public class ContactAppAdmin extends javax.swing.JFrame {
     }
     
     //Query variables
-        private static String SEARCH_QUERY = "from Contact c where c.lastName like '";
+        private static final String SEARCH_QUERY = "from Contact c where c.lastName like '";
 //        private static String ADD_QUERY = "INSERT INTO Contact(firstName, lastName, phone)"
 //                + "SELECT firstName, lastName, phone FROM '";
 
@@ -211,7 +207,7 @@ public class ContactAppAdmin extends javax.swing.JFrame {
             output.setText("****Contact Successfully Added****");
         }
         catch (HibernateException he) {
-            he.printStackTrace();
+            output.setText("****Add Error****" + he.getMessage());
         }
         
     }
@@ -225,7 +221,7 @@ public class ContactAppAdmin extends javax.swing.JFrame {
             displayResult(resultList);
             session.getTransaction().commit();
         } catch (HibernateException he) {
-            he.printStackTrace();
+            output.setText("****Search Error****" + he.getMessage());
         }
 
     }
@@ -276,11 +272,8 @@ public class ContactAppAdmin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new ContactAppAdmin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ContactAppAdmin().setVisible(true);
         });
     }
 
