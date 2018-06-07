@@ -202,12 +202,18 @@ public class ContactAppAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_executeActionPerformed
         
     private void addHQLQuery(Contact contact) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.save(contact);
-        session.getTransaction().commit();
-        session.close();
-        output.setText("****Contact Successfully Added****");
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(contact);
+            session.getTransaction().commit();
+            session.close();
+            output.setText("****Contact Successfully Added****");
+        }
+        catch (HibernateException he) {
+            he.printStackTrace();
+        }
+        
     }
     
     private void searchHQLQuery(String hql) {
@@ -225,21 +231,21 @@ public class ContactAppAdmin extends javax.swing.JFrame {
     }
     
     private void displayResult(java.util.List resultList) {
-    Vector<String> tableHeaders = new Vector<>();
-    tableHeaders.add("First Name");
-    tableHeaders.add("Last Name");
-    tableHeaders.add("Phone");
-    Vector tableData = new Vector();
+        Vector<String> tableHeaders = new Vector<>();
+        tableHeaders.add("First Name");
+        tableHeaders.add("Last Name");
+        tableHeaders.add("Phone");
+        Vector tableData = new Vector();
 
-    for(Object o : resultList) {
-        Contact contact = (Contact)o;
-        Vector<Object> oneRow = new Vector<>();
-        oneRow.add(contact.getFirstName());
-        oneRow.add(contact.getLastName());
-        oneRow.add(contact.getPhone());
-        tableData.add(oneRow);
-    }
-    jTable1.setModel(new DefaultTableModel(tableData, tableHeaders));
+        for(Object o : resultList) {
+            Contact contact = (Contact)o;
+            Vector<Object> oneRow = new Vector<>();
+            oneRow.add(contact.getFirstName());
+            oneRow.add(contact.getLastName());
+            oneRow.add(contact.getPhone());
+            tableData.add(oneRow);
+        }
+        jTable1.setModel(new DefaultTableModel(tableData, tableHeaders));
 }
     
     /**
